@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CrossfadeApp</string>
+    <string name="sec">sec</string>
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
+    <string name="play_stop">Play|Stop</string>
+    <string name="choose_files">Choose your mp3 files</string>
+</resources>
