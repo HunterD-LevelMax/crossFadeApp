@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         fadeTime = getTimeFade(seekBar!!)
-                        textTime.text = getTimeFade(seekBar).toString() + " " + getString(R.string.sec)
+                        textTime.text =
+                            getTimeFade(seekBar).toString() + " " + getString(R.string.fade_out_time)
                     } catch (e: Exception) {
                         Log.d("seekbar", "Error")
                     }
@@ -88,9 +89,11 @@ class MainActivity : AppCompatActivity() {
                             buttonPlay.text = getString(R.string.play)
                             mediaPlayer.release()
                         }
-                    }else{
-                        buttonGetAudio1.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.shake))
-                        buttonGetAudio2.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.shake_reverse))
+                    } else {
+                        buttonGetAudio1.startAnimation(AnimationUtils.loadAnimation(this@MainActivity,
+                            R.anim.shake))
+                        buttonGetAudio2.startAnimation(AnimationUtils.loadAnimation(this@MainActivity,
+                            R.anim.shake_reverse))
                         Log.d("error", "Choose audio file")
                     }
                 } catch (e: Exception) {
@@ -113,7 +116,8 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 audioUri = result.data!!.data
-                binding.buttonGetAudio1.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.alpha))
+                binding.buttonGetAudio1.startAnimation(AnimationUtils.loadAnimation(this@MainActivity,
+                    R.anim.alpha))
             }
         }
 
@@ -122,7 +126,8 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 audioUri2 = result.data!!.data
-                binding.buttonGetAudio2.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.alpha))
+                binding.buttonGetAudio2.startAnimation(AnimationUtils.loadAnimation(this@MainActivity,
+                    R.anim.alpha))
             }
         }
 
@@ -165,6 +170,7 @@ class MainActivity : AppCompatActivity() {
                 timer.scheduleAtFixedRate({
                     currentTime = TimeUnit.SECONDS.convert(mediaPlayer.currentPosition.toLong(),
                         TimeUnit.MILLISECONDS).toInt()
+                    binding.textCurrentTime.text = currentTime.toString() + " sec"
                     if (currentTime == length.toInt() - fadeTime) {
                         crossFadeOut(mediaPlayer, fadeTime)
                     }
@@ -174,6 +180,7 @@ class MainActivity : AppCompatActivity() {
                         mediaPlayer.release()
                         play(audioUri2, audioUri)
                     }
+
                     Log.d("current time  = ", currentTime.toString())
                 }, 1000, 1000, TimeUnit.MILLISECONDS)
             } else {
@@ -188,7 +195,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         try {
-            count=0
+            count = 0
             binding.buttonPlay.text = getString(R.string.play_stop)
             binding.textTitle.text = getString(R.string.choose_files)
             mediaPlayer.release() //высбождаем mediaPlayer

@@ -27,6 +27,12 @@
             android:text="@string/choose_files"
             android:textAlignment="center" />
 
+        <TextView
+            android:id="@+id/textCurrentTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonPlay"
             android:layout_width="205dp"
@@ -75,9 +81,9 @@
 
         <TextView
             android:id="@+id/textTime"
+            android:text="@string/fade_out_time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2 sec" />
+            android:layout_height="wrap_content" />
 
         <SeekBar
             android:id="@+id/seekBar"
