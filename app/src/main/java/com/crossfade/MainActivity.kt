@@ -171,10 +171,10 @@ class MainActivity : AppCompatActivity() {
                     currentTime = TimeUnit.SECONDS.convert(mediaPlayer.currentPosition.toLong(),
                         TimeUnit.MILLISECONDS).toInt()
                     binding.textCurrentTime.text = currentTime.toString() + " sec"
-                    if (currentTime ==  length.toInt() -fadeTime) {
+                    if (currentTime ==  fadeTime) {
                         crossFadeOut(mediaPlayer, fadeTime)
                     }
-                    if (currentTime == length.toInt()) {
+                    if (currentTime == fadeTime*2) {
                         mediaPlayer.stop()
                         mediaPlayer.release()
                         play(audioUri2, audioUri)
