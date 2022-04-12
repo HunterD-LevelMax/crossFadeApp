@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         fadeTime = getTimeFade(seekBar!!)
-                        timeText.text = getTimeFade(seekBar).toString() + " " + getString(R.string.sec)
+                        textTime.text = getTimeFade(seekBar).toString() + " " + getString(R.string.sec)
                     } catch (e: Exception) {
                         Log.d("seekbar", "Error")
                     }
@@ -146,6 +146,7 @@ class MainActivity : AppCompatActivity() {
         fadeTime = getTimeFade(binding.seekBar)
 
         val length = getAudioFileLength(audioUri, this, false)
+
         if (fadeTime < 2) {
             fadeTime = 2
         }
@@ -155,7 +156,9 @@ class MainActivity : AppCompatActivity() {
             mediaPlayer.setDataSource(this, audioUri!!)
             mediaPlayer.prepare()
             mediaPlayer.start()
-            getPushMetaAudio(audioUri, binding.textTitle, this)
+
+            binding.textTitle.text = getAudioTitle(audioUri)
+
             val timer = Executors.newScheduledThreadPool(1)
 
             if (mediaPlayer.isPlaying) {
@@ -197,5 +200,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release() //высбождаем mediaPlayer
+        finish()
     }
 }

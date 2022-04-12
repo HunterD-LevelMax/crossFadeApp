@@ -1,33 +1,35 @@
 package com.crossfade
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Log
-import android.widget.TextView
 import java.io.File
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 fun getAudioFileLength(uri: Uri?, context: Context, stringFormat: Boolean): String {
     val stringBuilder = StringBuilder()
+    val hours: Int
+    val minutes: Int
+    var seconds: Int
+
     try {
         val mediaMetadataRetriever = MediaMetadataRetriever()
         mediaMetadataRetriever.setDataSource(context, uri)
         val duration =
             mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
         val millSecond = duration!!.toInt()
-        if (millSecond < 0) return 0.toString() // if some error then we say duration is zero
-        val hours: Int
-        val minutes: Int
-        var seconds = millSecond / 1000
+        seconds = millSecond / 1000
+
+        if (millSecond < 0) return 0.toString()
         if (!stringFormat) return seconds.toString()
-        Log.d("seconds", seconds.toString())
+
         hours = seconds / 3600
         minutes = seconds / 60 % 60
         seconds %= 60
+
         if (hours in 1..9) stringBuilder.append("0").append(hours)
             .append(":") else if (hours > 0) stringBuilder.append(hours).append(":")
         if (minutes < 10) stringBuilder.append("0").append(minutes)
@@ -39,15 +41,6 @@ fun getAudioFileLength(uri: Uri?, context: Context, stringFormat: Boolean): Stri
         e.printStackTrace()
     }
     return stringBuilder.toString()
-}
-
-// получаем/вставляем данные о файле (длина трека, название файла)
-@SuppressLint("SetTextI18n")
-fun getPushMetaAudio(uri: Uri, textView: TextView, context: Context) {
-    val length = getAudioFileLength(uri, context, true)
-    val lengthInSeconds = getAudioFileLength(uri, context, false)
-
-    textView.text = getAudioTitle(uri)
 }
 
 fun getAudioTitle(uri: Uri?): String? {

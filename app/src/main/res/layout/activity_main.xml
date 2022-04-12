@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="248dp"
-        android:layout_height="174dp"
+        android:layout_width="250dp"
+        android:layout_height="175dp"
         android:foregroundGravity="center"
         android:gravity="center"
         android:orientation="vertical"
@@ -29,11 +29,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonPlay"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
+            android:layout_width="205dp"
+            android:layout_height="75dp"
             android:backgroundTint="#7C0A02"
             android:text="@string/play_stop"
+            android:textAlignment="center"
             android:textColor="@color/white"
+            android:textStyle="normal|bold"
             app:cornerRadius="35dp" />
     </LinearLayout>
 
@@ -43,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/ic_audiotrack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -53,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="32dp"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/ic_audiotrack"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <TextView
-            android:id="@+id/timeText"
+            android:id="@+id/textTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2 sec" />
