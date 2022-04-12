@@ -171,14 +171,14 @@ class MainActivity : AppCompatActivity() {
                     currentTime = TimeUnit.SECONDS.convert(mediaPlayer.currentPosition.toLong(),
                         TimeUnit.MILLISECONDS).toInt()
                     binding.textCurrentTime.text = currentTime.toString() + " sec"
-                    if (currentTime == length.toInt() - fadeTime) {
+                    if (currentTime ==  length.toInt() -fadeTime) {
                         crossFadeOut(mediaPlayer, fadeTime)
                     }
                     if (currentTime == length.toInt()) {
-                        timer.shutdown() // закрываем таймер для предотвращения утечки памяти
                         mediaPlayer.stop()
                         mediaPlayer.release()
                         play(audioUri2, audioUri)
+                        timer.shutdown() // закрываем таймер для предотвращения утечки памяти
                     }
 
                     Log.d("current time  = ", currentTime.toString())
