@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.SeekBar
 import androidx.activity.result.ActivityResultLauncher
@@ -83,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                         count++
                         if (count <= 1) {
                             buttonPlay.text = getString(R.string.stop)
+                            textCurrentTime.visibility = View.VISIBLE
                             playLoop(audioUri, audioUri2)
                         } else {
                             count = 0
@@ -196,8 +198,14 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         try {
             count = 0
-            binding.buttonPlay.text = getString(R.string.play_stop)
-            binding.textTitle.text = getString(R.string.choose_files)
+            binding.apply {
+                buttonPlay.text = getString(R.string.play_stop)
+                textTitle.text = getString(R.string.choose_files)
+                textCurrentTime.apply {
+                    text = ""
+                    visibility = View.GONE
+                }
+            }
             mediaPlayer.release() //высбождаем mediaPlayer
         } catch (e: Exception) {
             Log.d("Error", "mediaPlayer not init")
