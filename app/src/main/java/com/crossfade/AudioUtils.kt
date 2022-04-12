@@ -56,7 +56,7 @@ fun crossFadeOut(mediaPlayer: MediaPlayer, fadeTime: Int) {
     Log.d("Delta", delta.toString())
 
     //линейная зависимость затухания, чем меньше время, тем сильнее уменьшается звук
-    // скорость пропоционально увеличивается от времени затухания
+    // скорость пропорционально увеличивается от времени затухания
     timer.scheduleAtFixedRate({
         volume -= delta
         mediaPlayer.setVolume(volume, volume)
