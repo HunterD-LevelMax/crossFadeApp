@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity() {
                     visibility = View.GONE
                 }
             }
-            mediaPlayer.release() //высбождаем mediaPlayer
+            mediaPlayer.release()  //высвобождаем mediaPlayer
         } catch (e: Exception) {
             Log.d("Error", "mediaPlayer not init")
         }
