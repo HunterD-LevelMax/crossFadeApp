@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
     private fun chooseFile(getAudio: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "audio/*" // моджно выбрать только аудиофайлы
+        intent.type = "audio/*" // можно выбрать только аудиофайлы
         getAudio.launch(intent)
     }
 
@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release() //высбождаем mediaPlayer
+        mediaPlayer.release() //высвобождаем mediaPlayer
         finish()
     }
 }
