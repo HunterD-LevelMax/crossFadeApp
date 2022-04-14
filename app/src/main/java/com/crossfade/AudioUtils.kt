@@ -71,6 +71,33 @@ fun crossFadeOut(mediaPlayer: MediaPlayer, fadeTime: Int) {
         TimeUnit.MILLISECONDS)
 }
 
+// метод постепенного затухания аудио с учетом времени
+fun crossFadeIn(mediaPlayer: MediaPlayer, fadeTime: Int) {
+    val timer = Executors.newScheduledThreadPool(2)
+    var volume = 1f // максимальная текущая громкость
+    val smoothValue = 10 // сглаживающий параметр
+    val delta = (volume / fadeTime.toFloat()) / smoothValue
+    Log.d("Delta", delta.toString())
+
+    mediaPlayer.setVolume(0f, 0f)
+    volume = 0f
+    //линейная зависимость затухания, чем меньше время, тем сильнее уменьшается звук
+    // скорость пропорционально увеличивается от времени затухания
+    timer.scheduleAtFixedRate({
+        volume += delta
+        mediaPlayer.setVolume(volume, volume)
+        if (volume < 0) {
+            volume = 0f
+            timer.shutdown() // закрываем таймер для предотвращения утечки памяти
+        }
+        Log.d("Volume", volume.toString())
+    },
+        (1000 - (delta.toLong())) / smoothValue,
+        (1000 - (delta.toLong())) / smoothValue,
+        TimeUnit.MILLISECONDS)
+}
+
+
 fun getMediaDurationInMilliseconds(context: Context, uri: Uri?): Long {
     val retriever = MediaMetadataRetriever()
     return try {

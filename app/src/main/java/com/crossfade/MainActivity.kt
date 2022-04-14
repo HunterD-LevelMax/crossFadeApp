@@ -167,6 +167,8 @@ class MainActivity : AppCompatActivity() {
 
             binding.textTitle.text = getAudioTitle(audioUri)
 
+            crossFadeIn(mediaPlayer, fadeTime)
+
             val timer = Executors.newScheduledThreadPool(1)
 
             if (mediaPlayer.isPlaying) {
