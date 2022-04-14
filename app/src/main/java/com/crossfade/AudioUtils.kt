@@ -61,10 +61,9 @@ fun crossFadeOut(mediaPlayer: MediaPlayer, fadeTime: Int) {
         volume -= delta
         mediaPlayer.setVolume(volume, volume)
         if (volume < 0) {
-            volume = 0f
             timer.shutdown() // закрываем таймер для предотвращения утечки памяти
         }
-        Log.d("Volume", volume.toString())
+        Log.d("Volume - ", volume.toString())
     },
         (1000 - (delta.toLong())) / smoothValue,
         (1000 - (delta.toLong())) / smoothValue,
@@ -77,20 +76,20 @@ fun crossFadeIn(mediaPlayer: MediaPlayer, fadeTime: Int) {
     var volume = 1f // максимальная текущая громкость
     val smoothValue = 10 // сглаживающий параметр
     val delta = (volume / fadeTime.toFloat()) / smoothValue
-    Log.d("Delta", delta.toString())
+    Log.d("Delta +", delta.toString())
 
-    mediaPlayer.setVolume(0f, 0f)
     volume = 0f
+    mediaPlayer.setVolume(volume, volume)
+
     //линейная зависимость затухания, чем меньше время, тем сильнее уменьшается звук
     // скорость пропорционально увеличивается от времени затухания
     timer.scheduleAtFixedRate({
         volume += delta
         mediaPlayer.setVolume(volume, volume)
-        if (volume < 0) {
-            volume = 0f
+        if (volume > 1f + delta) {
             timer.shutdown() // закрываем таймер для предотвращения утечки памяти
         }
-        Log.d("Volume", volume.toString())
+        Log.d("Volume +", volume.toString())
     },
         (1000 - (delta.toLong())) / smoothValue,
         (1000 - (delta.toLong())) / smoothValue,
