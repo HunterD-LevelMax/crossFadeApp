@@ -113,6 +113,7 @@ class MainActivity : AppCompatActivity() {
         getAudio.launch(intent)
     }
 
+
     //получаем файл #1 из хранилища
     private var getAudio1 =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -172,7 +173,7 @@ class MainActivity : AppCompatActivity() {
                 timer.scheduleAtFixedRate({
                     currentTime = TimeUnit.SECONDS.convert(mediaPlayer.currentPosition.toLong(),
                         TimeUnit.MILLISECONDS).toInt()
-                    binding.textCurrentTime.text = currentTime.toString() + " sec"
+                    binding.textCurrentTime.text = "${currentTime.toString()} sec"
                     if (currentTime ==  fadeTime) {
                         crossFadeOut(mediaPlayer, fadeTime)
                     }
