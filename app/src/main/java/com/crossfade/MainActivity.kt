@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                         if (count <= 1) {
                             buttonPlay.text = getString(R.string.stop)
                             textCurrentTime.visibility = View.VISIBLE
-                            playCross(audioUri, audioUri2)
+                            playLoop(audioUri, audioUri2)
                         } else {
                             count = 0
                             buttonPlay.text = getString(R.string.play)
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     private fun playLoop(audio1: Uri?, audio2: Uri?) {
         thread {
             try {
-                play(audio1, audio2)
+                playCross(audio1, audio2)
             } catch (e: Exception) {
                 Log.d("error", "couldn't read files")
             }
@@ -153,9 +153,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
+    //проигрывание с перекрытием
     private fun playCross(audioUri: Uri?, audioUri2: Uri?){
         var currentTime: Int //текущая длительность аудио в секундах
         fadeTime = getTimeFade(binding.seekBar)
@@ -205,6 +203,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //проигрывание с перекрытием
     private fun playCross2(audioUri: Uri?, audioUri2: Uri?){
         var currentTime: Int //текущая длительность аудио в секундах
         fadeTime = getTimeFade(binding.seekBar)
@@ -254,7 +253,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
+    // поочередное проигрывание
     private fun play(audioUri: Uri?, audioUri2: Uri?) {
         var currentTime: Int //текущая длительность аудио в секундах
         fadeTime = getTimeFade(binding.seekBar)
@@ -302,6 +301,10 @@ class MainActivity : AppCompatActivity() {
             Log.d("error", "MediaPlayer error")
         }
     }
+
+
+
+
 
     override fun onStop() {
         super.onStop()
