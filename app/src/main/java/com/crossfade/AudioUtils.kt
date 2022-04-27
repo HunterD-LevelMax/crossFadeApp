@@ -86,7 +86,7 @@ fun crossFadeIn(mediaPlayer: MediaPlayer, fadeTime: Int) {
     timer.scheduleAtFixedRate({
         volume += delta
         mediaPlayer.setVolume(volume, volume)
-        if (volume > 1f + delta) {
+        if (volume > 1f) {
             timer.shutdown() // закрываем таймер для предотвращения утечки памяти
         }
         Log.d("Volume +", volume.toString())

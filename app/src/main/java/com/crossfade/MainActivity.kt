@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private var audioUri: Uri? = null // аудифайл, выбранный пользователем
     private var audioUri2: Uri? = null // аудифайл, выбранный пользователем
     private lateinit var mediaPlayer: MediaPlayer // глобальный MediaPlayer с выбором аудиофайлов
+    private lateinit var mediaPlayer2: MediaPlayer // глобальный MediaPlayer с выбором аудиофайлов
+
 
     private lateinit var binding: ActivityMainBinding // view binding (обращение к xml элементам без инициализации)
 
@@ -85,11 +87,12 @@ class MainActivity : AppCompatActivity() {
                         if (count <= 1) {
                             buttonPlay.text = getString(R.string.stop)
                             textCurrentTime.visibility = View.VISIBLE
-                            playLoop(audioUri, audioUri2)
+                            playCross(audioUri, audioUri2)
                         } else {
                             count = 0
                             buttonPlay.text = getString(R.string.play)
                             mediaPlayer.release()
+                            mediaPlayer2.release()
                         }
                     } else {
                         buttonGetAudio1.startAnimation(AnimationUtils.loadAnimation(this@MainActivity,
@@ -148,6 +151,109 @@ class MainActivity : AppCompatActivity() {
     private fun getTimeFade(seekBar: SeekBar): Int {
         return seekBar.progress
     }
+
+
+
+
+
+    private fun playCross(audioUri: Uri?, audioUri2: Uri?){
+        var currentTime: Int //текущая длительность аудио в секундах
+        fadeTime = getTimeFade(binding.seekBar)
+
+        val length = getAudioFileLength(audioUri, this, false)
+
+        if (fadeTime < 2) {
+            fadeTime = 2
+        }
+
+        try {
+            mediaPlayer = MediaPlayer()
+            mediaPlayer.setDataSource(this, audioUri!!)
+            mediaPlayer.prepare()
+            mediaPlayer.start()
+
+            binding.textTitle.text = getAudioTitle(audioUri)
+
+            crossFadeIn(mediaPlayer, fadeTime)
+
+            val timer = Executors.newScheduledThreadPool(1)
+
+            if (mediaPlayer.isPlaying) {
+                timer.scheduleAtFixedRate({
+                    currentTime = TimeUnit.SECONDS.convert(mediaPlayer.currentPosition.toLong(),
+                        TimeUnit.MILLISECONDS).toInt()
+
+                    if (currentTime ==  fadeTime) {
+                        crossFadeOut(mediaPlayer, fadeTime)
+                        playCross2(audioUri2, audioUri)
+                    }
+                    if (currentTime == fadeTime*2) {
+                        mediaPlayer.stop()
+                        mediaPlayer.release()
+
+                        timer.shutdown() // закрываем таймер для предотвращения утечки памяти
+                    }
+
+                    Log.d("current time  = ", currentTime.toString())
+                }, 1000, 1000, TimeUnit.MILLISECONDS)
+            } else {
+                timer.shutdown() // закрываем таймер для предотвращения утечки памяти
+                mediaPlayer.release()
+            }
+        } catch (e: Exception) {
+            Log.d("error", "MediaPlayer error")
+        }
+    }
+
+    private fun playCross2(audioUri: Uri?, audioUri2: Uri?){
+        var currentTime: Int //текущая длительность аудио в секундах
+        fadeTime = getTimeFade(binding.seekBar)
+
+        val length = getAudioFileLength(audioUri, this, false)
+
+        if (fadeTime < 2) {
+            fadeTime = 2
+        }
+
+        try {
+            mediaPlayer2 = MediaPlayer()
+            mediaPlayer2.setDataSource(this, audioUri!!)
+            mediaPlayer2.prepare()
+            mediaPlayer2.start()
+
+            binding.textTitle.text = getAudioTitle(audioUri)
+
+            crossFadeIn(mediaPlayer2, fadeTime)
+
+            val timer = Executors.newScheduledThreadPool(1)
+
+            if (mediaPlayer2.isPlaying) {
+                timer.scheduleAtFixedRate({
+                    currentTime = TimeUnit.SECONDS.convert(mediaPlayer2.currentPosition.toLong(),
+                        TimeUnit.MILLISECONDS).toInt()
+
+                    if (currentTime ==  fadeTime) {
+                        crossFadeOut(mediaPlayer2, fadeTime)
+                        playCross(audioUri2, audioUri)
+                    }
+                    if (currentTime == fadeTime*2) {
+                        mediaPlayer2.stop()
+                        mediaPlayer2.release()
+                        timer.shutdown() // закрываем таймер для предотвращения утечки памяти
+                    }
+
+                    Log.d("current time  = ", currentTime.toString())
+                }, 1000, 1000, TimeUnit.MILLISECONDS)
+            } else {
+                timer.shutdown() // закрываем таймер для предотвращения утечки памяти
+                mediaPlayer2.release()
+            }
+        } catch (e: Exception) {
+            Log.d("error", "MediaPlayer error")
+        }
+    }
+
+
 
     private fun play(audioUri: Uri?, audioUri2: Uri?) {
         var currentTime: Int //текущая длительность аудио в секундах
@@ -210,6 +316,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             mediaPlayer.release()  //высвобождаем mediaPlayer
+            mediaPlayer2.release() //высвобождаем mediaPlayer
         } catch (e: Exception) {
             Log.d("Error", "mediaPlayer not init")
         }
@@ -218,6 +325,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release() //высвобождаем mediaPlayer
+        mediaPlayer2.release() //высвобождаем mediaPlayer
         finish()
     }
 }
