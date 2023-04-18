@@ -22,8 +22,8 @@ import com.crossfade.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private var fadeTime: Int = 0 // длина затухания
     private var count = 0 //счетчик нажатий PLAY
-    private var audioUri: Uri? = null // аудифайл, выбранный пользователем
-    private var audioUri2: Uri? = null // аудифайл, выбранный пользователем
+    private var audioUri: Uri? = null // аудифайл #1, выбранный пользователем
+    private var audioUri2: Uri? = null // аудифайл #2, выбранный пользователем
     private lateinit var mediaPlayer: MediaPlayer // глобальный MediaPlayer с выбором аудиофайлов
     private lateinit var mediaPlayer2: MediaPlayer // глобальный MediaPlayer с выбором аудиофайлов
 
@@ -301,10 +301,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("error", "MediaPlayer error")
         }
     }
-
-
-
-
 
     override fun onStop() {
         super.onStop()
